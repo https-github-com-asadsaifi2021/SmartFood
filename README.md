@@ -13,6 +13,7 @@ User Authentication (Optional): For a personalized experience, users can create 
 
 # Installation
 Clone the repository: git clone https://github.com/asadsaifi2021/SmartFood.git
+
 Navigate to the project folder: cd SmartFood
 Install dependencies: npm install or yarn install
 
