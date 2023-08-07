@@ -3,7 +3,7 @@
 SmartFood is a mobile application built with React Native that helps users manage their grocery items by tracking their expiry dates. With this app, users can store the expiry dates of the food items they purchase from the grocery store and receive timely notifications to consume the food before it expires, reducing food waste and promoting responsible consumption.
 
 # Features
-## Expiry Date Tracking: Users can add food items to the app by providing the item name and its expiry date.
+Expiry Date Tracking: Users can add food items to the app by providing the item name and its expiry date.
 
 Notification System: The app sends notifications to users a few days before the expiry date, reminding them to consume the food before it goes bad.
 
@@ -12,9 +12,8 @@ Expired Items Display: Users can view a list of expired food items to ensure pro
 User Authentication (Optional): For a personalized experience, users can create accounts and store their food items securely.
 
 Screenshots
-<!-- Add screenshots or a gif showcasing the app's UI and functionality -->
 Installation
-Clone the repository: git clone https://github.com/your-username/SmartFood.git
+Clone the repository: git clone https://github.com/asadsaifi2021/SmartFood.git
 Navigate to the project folder: cd SmartFood
 Install dependencies: npm install or yarn install
 Usage
