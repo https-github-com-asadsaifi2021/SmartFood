@@ -1,9 +1,8 @@
-SmartFood Mobile Application
-SmartFood Logo <!-- Add a logo image if you have one -->
+**SmartFood Mobile Application
 
 SmartFood is a mobile application built with React Native that helps users manage their grocery items by tracking their expiry dates. With this app, users can store the expiry dates of the food items they purchase from the grocery store and receive timely notifications to consume the food before it expires, reducing food waste and promoting responsible consumption.
 
-Features
+**Features
 Expiry Date Tracking: Users can add food items to the app by providing the item name and its expiry date.
 
 Notification System: The app sends notifications to users a few days before the expiry date, reminding them to consume the food before it goes bad.
