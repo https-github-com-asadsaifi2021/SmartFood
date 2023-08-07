@@ -11,24 +11,22 @@ Expired Items Display: Users can view a list of expired food items to ensure pro
 
 User Authentication (Optional): For a personalized experience, users can create accounts and store their food items securely.
 
-Screenshots
-Installation
+# Installation
 Clone the repository: git clone https://github.com/asadsaifi2021/SmartFood.git
 Navigate to the project folder: cd SmartFood
 Install dependencies: npm install or yarn install
-Usage
+
+# Usage
 Run the application on iOS simulator: npx react-native run-ios
 Run the application on Android emulator: npx react-native run-android
 Note: For notifications to work on real devices, additional setup may be required (e.g., Firebase Cloud Messaging).
 
-Dependencies
+# Dependencies
 React Native: ^0.64.0
 React Navigation: ^5.0.0
-Firebase: ^8.0.0
+NativeWind: ^2.0.11
+TailwindCSS: 3.3.2
 React Native Local Notifications: ^5.0.0
-SQLite: ^3.0.0
-Contributing
-Contributions to SmartFood are welcome! If you encounter any issues or have suggestions for improvements, feel free to open an issue or submit a pull request.
 
-License
+# License
 This project is licensed under the MIT License.
