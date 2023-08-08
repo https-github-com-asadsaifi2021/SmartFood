@@ -24,9 +24,13 @@ Note: For notifications to work on real devices, additional setup may be require
 
 # Dependencies
 React Native: ^0.64.0
+
 React Navigation: ^5.0.0
+
 NativeWind: ^2.0.11
+
 TailwindCSS: 3.3.2
+
 React Native Local Notifications: ^5.0.0
 
 # License
