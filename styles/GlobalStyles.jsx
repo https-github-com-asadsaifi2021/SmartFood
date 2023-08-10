@@ -23,4 +23,12 @@ export const globalStyles = StyleSheet.create({
     color: "#fff",
     fontSize: 30,
   },
+
+  input: {
+    borderWidth: 1,
+    borderBlockColor: "#ddd",
+    padding: 10,
+    fontSize: 18,
+    borderRadius: 3,
+  },
 });
