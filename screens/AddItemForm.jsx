@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import { globalStyles } from "../styles/GlobalStyles";
 import { Database } from "../database/Database";
 
-export default function AddItemForm() {
+export default function AddItemForm({ onItemAdded }) {
   return (
     <View style={globalStyles.container}>
       <Formik
@@ -11,6 +11,7 @@ export default function AddItemForm() {
         onSubmit={(values, actions) => {
           console.log(values);
           Database.insertItem(values.name, values.quantity, values.expiryDate);
+          onItemAdded();
           actions.resetForm();
         }}
       >

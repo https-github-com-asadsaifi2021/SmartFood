@@ -37,5 +37,23 @@ export const Database = {
       );
     });
   },
-  // More functions as needed
+
+  getItems: () => {
+    return new Promise((resolve, reject) => {
+      db.transaction((tx) => {
+        tx.executeSql(
+          "SELECT * FROM items",
+          [],
+          (_, results) => {
+            const queryItems = results.rows._array;
+            resolve(queryItems);
+          },
+          (_, error) => {
+            reject(error);
+          }
+        );
+      });
+    });
+  },
 };
+// More functions as needed

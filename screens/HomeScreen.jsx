@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,12 +10,42 @@ import {
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { globalStyles } from "../styles/GlobalStyles";
 import AddItemForm from "./AddItemForm";
+import { Database } from "../database/Database";
 
 const HomeScreen = () => {
   const [addItemFormModal, setaddItemFormModal] = useState(false);
 
+  const [items, setItems] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const queryItems = await Database.getItems();
+      setItems(queryItems);
+    } catch (error) {
+      console.error("Error fetching items: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleItemAdded = async () => {
+    setaddItemFormModal(false);
+    await fetchData();
+  };
+
   return (
     <View style={globalStyles.container}>
+      {/* Items view */}
+      {items.map((item) => (
+        <Text key={item.id}>
+          {item.name} - Expiry Date: {item.expiryDate} - Quantity:{" "}
+          {item.quantity}
+        </Text>
+      ))}
+
+      {/* Modal */}
       <Modal visible={addItemFormModal} animationType="slide">
         <TouchableWithoutFeedback
           onPress={() => {
@@ -29,10 +59,12 @@ const HomeScreen = () => {
               size={24}
               onPress={() => setaddItemFormModal(false)}
             />
-            <AddItemForm />
+            <AddItemForm onItemAdded={handleItemAdded} />
           </View>
         </TouchableWithoutFeedback>
       </Modal>
+
+      {/* Add button */}
       <TouchableOpacity
         style={globalStyles.addButtonContainer}
         onPress={() => setaddItemFormModal(true)}
