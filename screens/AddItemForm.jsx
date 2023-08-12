@@ -1,14 +1,17 @@
 import { Button, TextInput, View } from "react-native";
 import { Formik } from "formik";
 import { globalStyles } from "../styles/GlobalStyles";
+import { Database } from "../database/Database";
 
 export default function AddItemForm() {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View style={globalStyles.container}>
       <Formik
         initialValues={{ name: "", quantity: "", expiryDate: "" }}
-        onSubmit={(values) => {
+        onSubmit={(values, actions) => {
           console.log(values);
+          Database.insertItem(values.name, values.quantity, values.expiryDate);
+          actions.resetForm();
         }}
       >
         {(props) => (
@@ -16,7 +19,7 @@ export default function AddItemForm() {
             <TextInput
               style={globalStyles.input}
               placeholder="Name"
-              onChangeText={props.handleChange("title")}
+              onChangeText={props.handleChange("name")}
               value={props.values.title}
             />
             <TextInput

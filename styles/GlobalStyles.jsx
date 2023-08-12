@@ -3,6 +3,13 @@ import { StyleSheet, Dimensions } from "react-native";
 const windowWidth = Dimensions.get("window").width;
 
 export const globalStyles = StyleSheet.create({
+  // For base container
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+
+  // Any add button
   addButtonContainer: {
     position: "absolute",
     bottom: 20,
@@ -24,11 +31,29 @@ export const globalStyles = StyleSheet.create({
     fontSize: 30,
   },
 
+  // For Text input
   input: {
     borderWidth: 1,
-    borderBlockColor: "#ddd",
+    borderColor: "#ddd",
     padding: 10,
     fontSize: 18,
     borderRadius: 3,
+  },
+
+  // For modal close button
+  modalClose: {
+    marginBottom: 10,
+    padding: 10,
+    alignSelf: "flex-end",
+    backgroundColor: "#ff6347",
+    borderRadius: 30,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
 });
