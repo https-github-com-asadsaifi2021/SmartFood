@@ -9,14 +9,19 @@ import {
 } from "react-native";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { globalStyles } from "../styles/GlobalStyles";
+import { tableStyles } from "../styles/TableStyles";
 import AddItemForm from "./AddItemForm";
 import { Database } from "../database/Database";
+import { FlatList } from "react-native-gesture-handler";
 
 const HomeScreen = () => {
+  // Add item form modal
   const [addItemFormModal, setaddItemFormModal] = useState(false);
 
+  // Items from database state
   const [items, setItems] = useState([]);
 
+  // Fetch data from database
   const fetchData = async () => {
     try {
       const queryItems = await Database.getItems();
@@ -26,24 +31,62 @@ const HomeScreen = () => {
     }
   };
 
+  // Useeffect to track change in database
   useEffect(() => {
     fetchData();
   }, []);
 
+  // Function to run when item is added to database
   const handleItemAdded = async () => {
     setaddItemFormModal(false);
     await fetchData();
   };
 
+  // Items to be Rendered in FlatList
+  const renderItem = ({ item }) => (
+    <View style={tableStyles.tableRow}>
+      <Text style={tableStyles.tableCell}>{item.name} </Text>
+      <Text style={tableStyles.tableCell}> {item.expiryDate} </Text>
+      <Text style={tableStyles.tableCell}> {item.quantity} </Text>
+      <TouchableOpacity
+        onPress={() => handleEdit(item.id)} // Call a function to handle edit
+        style={tableStyles.editButton}
+      >
+        <Text style={tableStyles.buttonText}>Edit</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => handleDelete(item.id)} // Call a function to handle delete
+        style={tableStyles.deleteButton}
+      >
+        <Text style={tableStyles.buttonText}>Delete</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
   return (
     <View style={globalStyles.container}>
       {/* Items view */}
-      {items.map((item) => (
-        <Text key={item.id}>
-          {item.name} - Expiry Date: {item.expiryDate} - Quantity:{" "}
-          {item.quantity}
+      {/* Heading */}
+      <View style={tableStyles.tableRow}>
+        <Text style={[tableStyles.tableCell, tableStyles.headingCell]}>
+          Name
         </Text>
-      ))}
+        <Text style={[tableStyles.tableCell, tableStyles.headingCell]}>
+          ExpiryDate
+        </Text>
+        <Text style={[tableStyles.tableCell, tableStyles.headingCell]}>
+          Quantity
+        </Text>
+        <Text style={[tableStyles.tableCell, tableStyles.headingCell]}>
+          Actions
+        </Text>
+      </View>
+      {/* List of items */}
+      <FlatList
+        data={items}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id.toString()}
+      />
 
       {/* Modal */}
       <Modal visible={addItemFormModal} animationType="slide">

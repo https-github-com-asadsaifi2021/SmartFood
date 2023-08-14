@@ -9,7 +9,6 @@ export default function AddItemForm({ onItemAdded }) {
       <Formik
         initialValues={{ name: "", quantity: "", expiryDate: "" }}
         onSubmit={(values, actions) => {
-          console.log(values);
           Database.insertItem(values.name, values.quantity, values.expiryDate);
           onItemAdded();
           actions.resetForm();
