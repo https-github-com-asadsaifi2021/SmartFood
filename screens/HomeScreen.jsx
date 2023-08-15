@@ -31,16 +31,33 @@ const HomeScreen = () => {
     }
   };
 
-  // Useeffect to track change in database
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  // Function to run when item is added to database
+  // Handle item added to database
   const handleItemAdded = async () => {
     setaddItemFormModal(false);
     await fetchData();
   };
+
+  // Handle edit button
+  const handleEdit = async (id) => {
+    // ---TODO
+  };
+
+  // Handle delete button
+  const handleDelete = async (id) => {
+    try {
+      await Database.deleteItem(id).then((message) => {
+        console.log(message);
+      });
+      await fetchData();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // Useeffect to track change in database
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   // Items to be Rendered in FlatList
   const renderItem = ({ item }) => (

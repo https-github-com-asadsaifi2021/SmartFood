@@ -55,5 +55,22 @@ export const Database = {
       });
     });
   },
+
+  deleteItem: (id) => {
+    return new Promise((resolve, reject) => {
+      db.transaction((tx) => {
+        tx.executeSql(
+          "DELETE FROM items WHERE id=(?)",
+          [id],
+          (_, result) => {
+            resolve("Item successfully deleted");
+          },
+          (_, error) => {
+            reject(error);
+          }
+        );
+      });
+    });
+  },
 };
 // More functions as needed
