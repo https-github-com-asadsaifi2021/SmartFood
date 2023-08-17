@@ -15,13 +15,13 @@ import { Database } from "../database/Database";
 import { FlatList } from "react-native-gesture-handler";
 
 const HomeScreen = () => {
-  // Add item form modal
   const [addItemFormModal, setaddItemFormModal] = useState(false);
+  const [editItemModal, setEditItemModal] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
-  // Items from database state
   const [items, setItems] = useState([]);
+  const [editData, setEditData] = useState(null);
 
-  // Fetch data from database
   const fetchData = async () => {
     try {
       const queryItems = await Database.getItems();
@@ -38,8 +38,22 @@ const HomeScreen = () => {
   };
 
   // Handle edit button
-  const handleEdit = async (id) => {
-    // ---TODO
+  const handleEdit = async (id, name, expiryDate, quantity) => {
+    setEditMode(true);
+    setEditData({
+      id,
+      name,
+      expiryDate,
+      quantity,
+    });
+    setEditItemModal(true);
+  };
+
+  // Hanlde item edited to database
+  const handleItemEdited = async () => {
+    setEditMode(false);
+    setEditItemModal(false);
+    await fetchData();
   };
 
   // Handle delete button
@@ -66,7 +80,9 @@ const HomeScreen = () => {
       <Text style={tableStyles.tableCell}> {item.expiryDate} </Text>
       <Text style={tableStyles.tableCell}> {item.quantity} </Text>
       <TouchableOpacity
-        onPress={() => handleEdit(item.id)} // Call a function to handle edit
+        onPress={() =>
+          handleEdit(item.id, item.name, item.expiryDate, item.quantity)
+        } // Call a function to handle edit
         style={tableStyles.editButton}
       >
         <Text style={tableStyles.buttonText}>Edit</Text>
@@ -106,7 +122,7 @@ const HomeScreen = () => {
       />
 
       {/* Modal */}
-      <Modal visible={addItemFormModal} animationType="slide">
+      <Modal visible={addItemFormModal || editItemModal} animationType="slide">
         <TouchableWithoutFeedback
           onPress={() => {
             Keyboard.dismiss();
@@ -117,9 +133,18 @@ const HomeScreen = () => {
               name="close"
               style={globalStyles.modalClose}
               size={24}
-              onPress={() => setaddItemFormModal(false)}
+              onPress={() => {
+                setaddItemFormModal(false);
+                setEditItemModal(false);
+                setEditMode(false);
+              }}
             />
-            <AddItemForm onItemAdded={handleItemAdded} />
+            <AddItemForm
+              onItemAdded={handleItemAdded}
+              onItemEdited={handleItemEdited}
+              editData={editData}
+              editMode={editMode}
+            />
           </View>
         </TouchableWithoutFeedback>
       </Modal>

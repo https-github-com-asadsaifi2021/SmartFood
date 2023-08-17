@@ -21,20 +21,20 @@ export const Database = {
     });
   },
 
-  insertItem: (name, quantity, expiryDate, callback) => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        "INSERT INTO items (name, quantity, expiryDate) VALUES (?,?,?)",
-        [name, quantity, expiryDate],
-        (_, results) => {
-          if (callback) {
-            callback(results);
+  insertItem: (name, quantity, expiryDate) => {
+    return new Promise((resolve, reject) => {
+      db.transaction((tx) => {
+        tx.executeSql(
+          "INSERT INTO items (name, quantity, expiryDate) VALUES (?,?,?)",
+          [name, quantity, expiryDate],
+          (_, results) => {
+            resolve(results);
+          },
+          (_, error) => {
+            reject(error);
           }
-        },
-        (error) => {
-          console.error("Error inserting item", error);
-        }
-      );
+        );
+      });
     });
   },
 
@@ -64,6 +64,23 @@ export const Database = {
           [id],
           (_, result) => {
             resolve("Item successfully deleted");
+          },
+          (_, error) => {
+            reject(error);
+          }
+        );
+      });
+    });
+  },
+
+  updateItem: (id, name, quantity, expiryDate) => {
+    return new Promise((resolve, reject) => {
+      db.transaction((tx) => {
+        tx.executeSql(
+          "UPDATE items SET name=(?), quantity=(?), expiryDate=(?) WHERe id = (?)",
+          [name, quantity, expiryDate, id],
+          (_, result) => {
+            resolve("Item successfully updated");
           },
           (_, error) => {
             reject(error);

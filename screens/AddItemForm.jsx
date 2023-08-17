@@ -3,15 +3,47 @@ import { Formik } from "formik";
 import { globalStyles } from "../styles/GlobalStyles";
 import { Database } from "../database/Database";
 
-export default function AddItemForm({ onItemAdded }) {
+export default function AddItemForm({
+  onItemAdded,
+  onItemEdited,
+  editData,
+  editMode,
+}) {
+  const initValues = editMode
+    ? {
+        id: editData ? editData.id.toString() : "",
+        name: editData ? editData.name.toString() : "",
+        quantity: editData ? editData.quantity.toString() : "",
+        expiryDate: editData ? editData.expiryDate.toString() : "",
+      }
+    : {
+        name: "",
+        quantity: "",
+        expiryDate: "",
+      };
+
   return (
     <View style={globalStyles.container}>
       <Formik
-        initialValues={{ name: "", quantity: "", expiryDate: "" }}
-        onSubmit={(values, actions) => {
-          Database.insertItem(values.name, values.quantity, values.expiryDate);
-          onItemAdded();
-          actions.resetForm();
+        initialValues={initValues}
+        onSubmit={async (values, actions) => {
+          if (editMode) {
+            await Database.updateItem(
+              values.id,
+              values.name,
+              values.quantity,
+              values.expiryDate
+            );
+            onItemEdited();
+          } else {
+            await Database.insertItem(
+              values.name,
+              values.quantity,
+              values.expiryDate
+            );
+            onItemAdded();
+            actions.resetForm();
+          }
         }}
       >
         {(props) => (
@@ -20,7 +52,7 @@ export default function AddItemForm({ onItemAdded }) {
               style={globalStyles.input}
               placeholder="Name"
               onChangeText={props.handleChange("name")}
-              value={props.values.title}
+              value={props.values.name}
             />
             <TextInput
               style={globalStyles.input}
