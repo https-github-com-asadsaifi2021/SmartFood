@@ -22,6 +22,7 @@ export const Database = {
   },
 
   insertItem: (name, quantity, expiryDate) => {
+    console.log(expiryDate);
     return new Promise((resolve, reject) => {
       db.transaction((tx) => {
         tx.executeSql(
