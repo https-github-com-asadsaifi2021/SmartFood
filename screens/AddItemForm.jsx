@@ -35,20 +35,22 @@ export default function AddItemForm({
   // DatePicker
   const [date, setDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
-  const [expiryDate, setExpiryDate] = useState(date.toDateString());
 
   const toggleDatePicker = () => {
     setShowPicker(!showPicker);
   };
 
   // Android
-  const onChangeAndroid = ({ type }, selectedDate) => {
+  const onChangeAndroid = ({ type }, selectedDate, props) => {
     if (type == "set") {
       const currentDate = selectedDate || date;
       setDate(currentDate);
       if (Platform.OS === "android") {
+        const dateString = currentDate.toDateString();
+        if (props.values.expiryDate !== dateString) {
+          props.setFieldValue("expiryDate", dateString);
+        }
         toggleDatePicker();
-        setExpiryDate(currentDate.toDateString());
       }
     } else {
       toggleDatePicker();
@@ -57,7 +59,7 @@ export default function AddItemForm({
 
   // IOS
   const confirmIOSDate = () => {
-    ssetExpiryDate(date.toDateString());
+    props.setFieldValue("expiryDate", date.toDateString());
     toggleDatePicker();
   };
 
@@ -74,6 +76,7 @@ export default function AddItemForm({
               values.expiryDate
             );
             onItemEdited();
+            actions.resetForm();
           } else {
             await Database.insertItem(
               values.name,
@@ -102,7 +105,7 @@ export default function AddItemForm({
             <Pressable onPress={toggleDatePicker}>
               <TextInput
                 style={globalStyles.input}
-                placeholder={expiryDate}
+                placeholder="Expiry Date"
                 onChangeText={props.handleChange("expiryDate")}
                 value={props.values.expiryDate}
                 editable={false}
@@ -116,7 +119,11 @@ export default function AddItemForm({
                 mode="date"
                 display="calender"
                 value={date}
-                onChange={onChangeAndroid}
+                onChange={(event, selectedDate) => {
+                  if (selectedDate) {
+                    onChangeAndroid(event, selectedDate, props);
+                  }
+                }}
               />
             )}
 
