@@ -42,7 +42,7 @@ export default function AddItemForm({
 
   // Android
   const onChangeAndroid = ({ type }, selectedDate, props) => {
-    if (type == "set") {
+    if (type === "set") {
       const currentDate = selectedDate || date;
       setDate(currentDate);
       if (Platform.OS === "android") {
@@ -50,10 +50,7 @@ export default function AddItemForm({
         if (props.values.expiryDate !== dateString) {
           props.setFieldValue("expiryDate", dateString);
         }
-        toggleDatePicker();
       }
-    } else {
-      toggleDatePicker();
     }
   };
 
@@ -109,7 +106,6 @@ export default function AddItemForm({
                 onChangeText={props.handleChange("expiryDate")}
                 value={props.values.expiryDate}
                 editable={false}
-                onPressIn={toggleDatePicker}
               />
             </Pressable>
 
@@ -117,11 +113,12 @@ export default function AddItemForm({
             {showPicker && (
               <DateTimePicker
                 mode="date"
-                display="calender"
+                display="spinner"
                 value={date}
-                onChange={(event, selectedDate) => {
+                onChange={({ type }, selectedDate) => {
                   if (selectedDate) {
-                    onChangeAndroid(event, selectedDate, props);
+                    toggleDatePicker();
+                    onChangeAndroid({ type }, selectedDate, props);
                   }
                 }}
               />
