@@ -38,6 +38,8 @@ export const globalStyles = StyleSheet.create({
     padding: 10,
     fontSize: 18,
     borderRadius: 3,
+    marginTop: 2,
+    marginBottom: 10,
   },
 
   // For modal close button

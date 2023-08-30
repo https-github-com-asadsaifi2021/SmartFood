@@ -1,5 +1,6 @@
 import {
   Button,
+  Text,
   TextInput,
   View,
   Pressable,
@@ -9,6 +10,7 @@ import {
 import { useState, useEffect } from "react";
 import { Formik } from "formik";
 import { globalStyles } from "../styles/GlobalStyles";
+import { addFormStyles } from "../styles/AddFormStyles";
 import { Database } from "../database/Database";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
@@ -17,6 +19,7 @@ export default function AddItemForm({
   onItemEdited,
   editData,
   editMode,
+  props,
 }) {
   // EditMode
   const initValues = editMode
@@ -87,27 +90,32 @@ export default function AddItemForm({
       >
         {(props) => (
           <View>
-            <TextInput
-              style={globalStyles.input}
-              placeholder="Name"
-              onChangeText={props.handleChange("name")}
-              value={props.values.name}
-            />
-            <TextInput
-              style={globalStyles.input}
-              placeholder="Quantity"
-              onChangeText={props.handleChange("quantity")}
-              value={props.values.quantity}
-            />
-            <Pressable onPress={toggleDatePicker}>
+            <View style={addFormStyles.form}>
+              <Text>Name of Food</Text>
               <TextInput
                 style={globalStyles.input}
-                placeholder="Expiry Date"
-                onChangeText={props.handleChange("expiryDate")}
-                value={props.values.expiryDate}
-                editable={false}
+                placeholder="Name"
+                onChangeText={props.handleChange("name")}
+                value={props.values.name}
               />
-            </Pressable>
+              <Text>Quantity</Text>
+              <TextInput
+                style={globalStyles.input}
+                placeholder="Quantity"
+                onChangeText={props.handleChange("quantity")}
+                value={props.values.quantity}
+              />
+              <Text>Expiry Date</Text>
+              <Pressable onPress={toggleDatePicker}>
+                <TextInput
+                  style={globalStyles.input}
+                  placeholder="Expiry Date"
+                  onChangeText={props.handleChange("expiryDate")}
+                  value={props.values.expiryDate}
+                  editable={false}
+                />
+              </Pressable>
+            </View>
 
             {/* DatePicker */}
             {showPicker && (
