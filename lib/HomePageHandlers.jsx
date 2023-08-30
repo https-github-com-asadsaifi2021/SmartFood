@@ -29,9 +29,9 @@ export const handleEdit = async (
 
 // Hanlde item edited to database
 export const handleItemEdited = async (
+  fetchData,
   setEditMode,
-  setEditItemModal,
-  fetchData
+  setEditItemModal
 ) => {
   setEditMode(false);
   setEditItemModal(false);

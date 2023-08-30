@@ -21,7 +21,7 @@ import {
 } from "../lib/HomePageHandlers";
 
 const HomeScreen = () => {
-  const [addItemFormModal, setaddItemFormModal] = useState(false);
+  const [addItemFormModal, setAddItemModal] = useState(false);
   const [editItemModal, setEditItemModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
@@ -111,17 +111,20 @@ const HomeScreen = () => {
               style={globalStyles.modalClose}
               size={24}
               onPress={() => {
-                setaddItemFormModal(false);
+                setAddItemModal(false);
                 setEditItemModal(false);
                 setEditMode(false);
               }}
             />
             <AddItemForm
-              onItemAdded={() =>
-                handleItemAdded(fetchData, setaddItemFormModal)
-              }
+              onItemAdded={() => handleItemAdded(fetchData, setAddItemModal)}
               onItemEdited={() =>
-                handleItemEdited(fetchData, setEditMode, setEditItemModal)
+                handleItemEdited(
+                  fetchData,
+                  setEditMode,
+                  setEditItemModal,
+                  setAddItemModal
+                )
               }
               editData={editData}
               editMode={editMode}
@@ -133,7 +136,7 @@ const HomeScreen = () => {
       {/* Add button */}
       <TouchableOpacity
         style={globalStyles.addButtonContainer}
-        onPress={() => setaddItemFormModal(true)}
+        onPress={() => setAddItemModal(true)}
       >
         <FontAwesome name="plus" style={globalStyles.addButtonIcon} />
       </TouchableOpacity>
