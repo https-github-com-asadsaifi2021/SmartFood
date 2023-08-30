@@ -13,6 +13,12 @@ import { tableStyles } from "../styles/TableStyles";
 import AddItemForm from "./AddItemForm";
 import { Database } from "../database/Database";
 import { FlatList } from "react-native-gesture-handler";
+import {
+  handleDelete,
+  handleEdit,
+  handleItemAdded,
+  handleItemEdited,
+} from "../lib/Handler";
 
 const HomeScreen = () => {
   const [addItemFormModal, setaddItemFormModal] = useState(false);
@@ -31,43 +37,6 @@ const HomeScreen = () => {
     }
   };
 
-  // Handle item added to database
-  const handleItemAdded = async () => {
-    setaddItemFormModal(false);
-    await fetchData();
-  };
-
-  // Handle edit button
-  const handleEdit = async (id, name, expiryDate, quantity) => {
-    setEditMode(true);
-    setEditData({
-      id,
-      name,
-      expiryDate,
-      quantity,
-    });
-    setEditItemModal(true);
-  };
-
-  // Hanlde item edited to database
-  const handleItemEdited = async () => {
-    setEditMode(false);
-    setEditItemModal(false);
-    await fetchData();
-  };
-
-  // Handle delete button
-  const handleDelete = async (id) => {
-    try {
-      await Database.deleteItem(id).then((message) => {
-        console.log(message);
-      });
-      await fetchData();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   // Useeffect to track change in database
   useEffect(() => {
     fetchData();
@@ -77,18 +46,26 @@ const HomeScreen = () => {
   const renderItem = ({ item }) => (
     <View style={tableStyles.tableRow}>
       <Text style={tableStyles.tableCell}>{item.name} </Text>
-      <Text style={tableStyles.tableCell}> {item.expiryDate} </Text>
-      <Text style={tableStyles.tableCell}> {item.quantity} </Text>
+      <Text style={tableStyles.tableCell}>{item.expiryDate} </Text>
+      <Text style={tableStyles.tableCell}>{item.quantity} </Text>
       <TouchableOpacity
         onPress={() =>
-          handleEdit(item.id, item.name, item.expiryDate, item.quantity)
+          handleEdit(
+            item.id,
+            item.name,
+            item.expiryDate,
+            item.quantity,
+            setEditData,
+            setEditMode,
+            setEditItemModal
+          )
         } // Call a function to handle edit
         style={tableStyles.editButton}
       >
         <Text style={tableStyles.buttonText}>Edit</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => handleDelete(item.id)} // Call a function to handle delete
+        onPress={() => handleDelete(item.id, fetchData)} // Call a function to handle delete
         style={tableStyles.deleteButton}
       >
         <Text style={tableStyles.buttonText}>Delete</Text>
@@ -105,7 +82,7 @@ const HomeScreen = () => {
           Name
         </Text>
         <Text style={[tableStyles.tableCell, tableStyles.headingCell]}>
-          ExpiryDate
+          DaysLeft
         </Text>
         <Text style={[tableStyles.tableCell, tableStyles.headingCell]}>
           Quantity
@@ -140,8 +117,12 @@ const HomeScreen = () => {
               }}
             />
             <AddItemForm
-              onItemAdded={handleItemAdded}
-              onItemEdited={handleItemEdited}
+              onItemAdded={() =>
+                handleItemAdded(fetchData, setaddItemFormModal)
+              }
+              onItemEdited={() =>
+                handleItemEdited(fetchData, setEditMode, setEditItemModal)
+              }
               editData={editData}
               editMode={editMode}
             />
