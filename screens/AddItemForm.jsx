@@ -19,6 +19,7 @@ export default function AddItemForm({
   onItemEdited,
   editData,
   editMode,
+  props,
 }) {
   // EditMode
   const initValues = editMode
@@ -146,7 +147,11 @@ export default function AddItemForm({
               </View>
             )}
 
-            <Button title="submit" color="green" onPress={props.handleSubmit} />
+            <Button
+              title={editMode ? "Save" : "submit"}
+              color="green"
+              onPress={props.handleSubmit}
+            />
           </View>
         )}
       </Formik>

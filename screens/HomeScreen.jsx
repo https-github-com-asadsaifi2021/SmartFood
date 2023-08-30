@@ -18,7 +18,7 @@ import {
   handleEdit,
   handleItemAdded,
   handleItemEdited,
-} from "../lib/Handler";
+} from "../lib/HomePageHandlers";
 
 const HomeScreen = () => {
   const [addItemFormModal, setaddItemFormModal] = useState(false);
