@@ -13,13 +13,13 @@ import { globalStyles } from "../styles/GlobalStyles";
 import { addFormStyles } from "../styles/AddFormStyles";
 import { Database } from "../database/Database";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import * as yup from "yup";
 
 export default function AddItemForm({
   onItemAdded,
   onItemEdited,
   editData,
   editMode,
-  props,
 }) {
   // EditMode
   const initValues = editMode
@@ -36,7 +36,9 @@ export default function AddItemForm({
       };
 
   // DatePicker
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(
+    editMode ? new Date(editData.expiryDate) : new Date()
+  );
   const [showPicker, setShowPicker] = useState(false);
 
   const toggleDatePicker = () => {
@@ -58,10 +60,17 @@ export default function AddItemForm({
   };
 
   // IOS
-  const confirmIOSDate = () => {
+  const confirmIOSDate = (props) => {
     props.setFieldValue("expiryDate", date.toDateString());
     toggleDatePicker();
   };
+
+  // Validation for form
+  const validationSchema = yup.object().shape({
+    name: yup.string().required().label("Name"),
+    quantity: yup.number().required().label("Quantity"),
+    expiryDate: yup.string().required().label("Expiry Date"),
+  });
 
   return (
     <View style={globalStyles.container}>
@@ -87,6 +96,7 @@ export default function AddItemForm({
             actions.resetForm();
           }
         }}
+        validationSchema={validationSchema}
       >
         {(props) => (
           <View>
@@ -98,6 +108,12 @@ export default function AddItemForm({
                 onChangeText={props.handleChange("name")}
                 value={props.values.name}
               />
+              {props.errors.name ? (
+                <Text style={addFormStyles.errorText}>{props.errors.name}</Text>
+              ) : null}
+            </View>
+
+            <View style={addFormStyles.form}>
               <Text>Quantity</Text>
               <TextInput
                 style={globalStyles.input}
@@ -105,6 +121,14 @@ export default function AddItemForm({
                 onChangeText={props.handleChange("quantity")}
                 value={props.values.quantity}
               />
+              {props.errors.quantity ? (
+                <Text style={addFormStyles.errorText}>
+                  {props.errors.quantity}
+                </Text>
+              ) : null}
+            </View>
+
+            <View style={addFormStyles.form}>
               <Text>Expiry Date</Text>
               <Pressable onPress={toggleDatePicker}>
                 <TextInput
@@ -115,6 +139,11 @@ export default function AddItemForm({
                   editable={false}
                 />
               </Pressable>
+              {props.errors.expiryDate ? (
+                <Text style={addFormStyles.errorText}>
+                  {props.errors.expiryDate}
+                </Text>
+              ) : null}
             </View>
 
             {/* DatePicker */}
@@ -141,7 +170,7 @@ export default function AddItemForm({
                 <TouchableOpacity style={[]} onPress={toggleDatePicker}>
                   <Text>Cancel</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[]} onPress={confirmIOSDate}>
+                <TouchableOpacity style={[]} onPress={confirmIOSDate(props)}>
                   <Text>Confirm</Text>
                 </TouchableOpacity>
               </View>

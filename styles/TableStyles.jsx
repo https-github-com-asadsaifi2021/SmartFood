@@ -40,4 +40,8 @@ export const tableStyles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
   },
+
+  daysLeftRed: {
+    color: "red",
+  },
 });

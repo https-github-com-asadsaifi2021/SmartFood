@@ -42,36 +42,52 @@ const HomeScreen = () => {
     fetchData();
   }, []);
 
+  /* Functions for data manipulaton */
+  const getDaysLeft = (date) => {
+    const timeDiff = new Date(date) - new Date();
+    return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+  };
+
   // Items to be Rendered in FlatList
-  const renderItem = ({ item }) => (
-    <View style={tableStyles.tableRow}>
-      <Text style={tableStyles.tableCell}>{item.name} </Text>
-      <Text style={tableStyles.tableCell}>{item.expiryDate} </Text>
-      <Text style={tableStyles.tableCell}>{item.quantity} </Text>
-      <TouchableOpacity
-        onPress={() =>
-          handleEdit(
-            item.id,
-            item.name,
-            item.expiryDate,
-            item.quantity,
-            setEditData,
-            setEditMode,
-            setEditItemModal
-          )
-        } // Call a function to handle edit
-        style={tableStyles.editButton}
-      >
-        <Text style={tableStyles.buttonText}>Edit</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => handleDelete(item.id, fetchData)} // Call a function to handle delete
-        style={tableStyles.deleteButton}
-      >
-        <Text style={tableStyles.buttonText}>Delete</Text>
-      </TouchableOpacity>
-    </View>
-  );
+  const renderItem = ({ item }) => {
+    const daysLeft = getDaysLeft(item.expiryDate);
+    const daysLeftStyle = daysLeft <= 2 ? tableStyles.daysLeftRed : {};
+
+    return (
+      <View style={tableStyles.tableRow}>
+        <Text style={tableStyles.tableCell}>{item.name} </Text>
+        <View style={tableStyles.tableCell}>
+          <Text style={daysLeftStyle}>
+            {daysLeft}
+            {daysLeft <= 0 && <Text style={{ color: "red" }}>(Expired)</Text>}
+          </Text>
+        </View>
+        <Text style={tableStyles.tableCell}>{item.quantity} </Text>
+        <TouchableOpacity
+          onPress={() =>
+            handleEdit(
+              item.id,
+              item.name,
+              item.expiryDate,
+              item.quantity,
+              setEditData,
+              setEditMode,
+              setEditItemModal
+            )
+          } // Call a function to handle edit
+          style={tableStyles.editButton}
+        >
+          <Text style={tableStyles.buttonText}>Edit</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => handleDelete(item.id, fetchData)} // Call a function to handle delete
+          style={tableStyles.deleteButton}
+        >
+          <Text style={tableStyles.buttonText}>Delete</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   return (
     <View style={globalStyles.container}>
@@ -94,8 +110,8 @@ const HomeScreen = () => {
       {/* List of items */}
       <FlatList
         data={items}
-        renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
+        renderItem={renderItem}
       />
 
       {/* Modal */}
@@ -119,12 +135,7 @@ const HomeScreen = () => {
             <AddItemForm
               onItemAdded={() => handleItemAdded(fetchData, setAddItemModal)}
               onItemEdited={() =>
-                handleItemEdited(
-                  fetchData,
-                  setEditMode,
-                  setEditItemModal,
-                  setAddItemModal
-                )
+                handleItemEdited(fetchData, setEditMode, setEditItemModal)
               }
               editData={editData}
               editMode={editMode}
