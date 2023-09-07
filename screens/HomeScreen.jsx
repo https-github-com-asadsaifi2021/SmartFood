@@ -10,7 +10,7 @@ import {
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { globalStyles } from "../styles/GlobalStyles";
 import { tableStyles } from "../styles/TableStyles";
-import AddItemForm from "./AddItemForm";
+import AddItemForm from "../modals/AddItemForm";
 import { Database } from "../database/Database";
 import { FlatList } from "react-native-gesture-handler";
 import {
