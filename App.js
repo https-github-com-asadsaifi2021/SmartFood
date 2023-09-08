@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import HomeStackNavigator from "./routes/HomeStack";
+import HomeStack from "./routes/HomeStack";
 import { Database } from './database/Database';
 
 export default function App() {
@@ -9,6 +9,6 @@ export default function App() {
   });
 
   return (
-    <HomeStackNavigator />
+    <HomeStack />
   );
 }
