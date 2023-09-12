@@ -1,11 +1,28 @@
-import { View, Text } from "react-native";
+import { View, Text, Switch } from "react-native";
+import { connect } from "react-redux";
+import { toggleTheme } from "../features/theme/themeSlice";
 
-const SettingScreen = () => {
+const SettingScreen = ({ isDarkTheme, toggleTheme }) => {
+  const toggleSwitch = () => {
+    toggleTheme();
+  };
+
   return (
     <View>
-      <Text>Setting Screen</Text>
+      <View>
+        <Text>Dark Theme:</Text>
+        <Switch value={isDarkTheme} onValueChange={toggleSwitch} />
+      </View>
     </View>
   );
 };
 
-export default SettingScreen;
+const mapStateToProps = (state) => ({
+  isDarkTheme: state.theme,
+});
+
+const mapDispatchToProps = {
+  toggleTheme,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingScreen);

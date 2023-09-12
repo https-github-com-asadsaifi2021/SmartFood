@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from "react-native";
 
 const windowWidth = Dimensions.get("window").width;
 
-export const globalStyles = StyleSheet.create({
+export const lightStyles = StyleSheet.create({
   // For base container
   container: {
     flex: 1,

@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useState, useEffect } from "react";
 import { Formik } from "formik";
-import { globalStyles } from "../styles/GlobalStyles";
+import { globalStyles } from "../styles/LightStyles";
 import { addFormStyles } from "../styles/AddFormStyles";
 import { Database } from "../database/Database";
 import DateTimePicker from "@react-native-community/datetimepicker";

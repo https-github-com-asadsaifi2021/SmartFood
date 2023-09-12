@@ -17,7 +17,7 @@ const SlidingSidebar = () => {
       }}
     >
       <Drawer.Screen
-        name="HomeScreen"
+        name="Home"
         component={HomeScreen}
         options={{
           drawerLabel: "Home",
@@ -27,7 +27,7 @@ const SlidingSidebar = () => {
         }}
       />
       <Drawer.Screen
-        name="SettingScreen"
+        name="Setting"
         component={SettingScreen}
         options={{
           drawerLabel: "Settings",

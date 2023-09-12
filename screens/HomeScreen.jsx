@@ -8,7 +8,8 @@ import {
   Modal,
 } from "react-native";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
-import { globalStyles } from "../styles/GlobalStyles";
+import { globalStyles, lightStyles } from "../styles/LightStyles";
+import { darkStyles } from "../styles/DarkStyles";
 import { tableStyles } from "../styles/TableStyles";
 import AddItemForm from "../modals/AddItemForm";
 import { Database } from "../database/Database";
@@ -19,8 +20,9 @@ import {
   handleItemAdded,
   handleItemEdited,
 } from "../lib/HomePageHandlers";
+import { connect } from "react-redux";
 
-const HomeScreen = () => {
+const HomeScreen = ({ isDarkTheme }) => {
   const [addItemFormModal, setAddItemModal] = useState(false);
   const [editItemModal, setEditItemModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -90,7 +92,7 @@ const HomeScreen = () => {
   };
 
   return (
-    <View style={globalStyles.container}>
+    <View style={isDarkTheme ? darkStyles.container : lightStyles.container}>
       {/* Items view */}
       {/* Heading */}
       <View style={tableStyles.tableRow}>
@@ -121,10 +123,10 @@ const HomeScreen = () => {
             Keyboard.dismiss();
           }}
         >
-          <View style={globalStyles.container}>
+          <View style={lightStyles.container}>
             <MaterialIcons
               name="close"
-              style={globalStyles.modalClose}
+              style={lightStyles.modalClose}
               size={24}
               onPress={() => {
                 setAddItemModal(false);
@@ -146,13 +148,17 @@ const HomeScreen = () => {
 
       {/* Add button */}
       <TouchableOpacity
-        style={globalStyles.addButtonContainer}
+        style={lightStyles.addButtonContainer}
         onPress={() => setAddItemModal(true)}
       >
-        <FontAwesome name="plus" style={globalStyles.addButtonIcon} />
+        <FontAwesome name="plus" style={lightStyles.addButtonIcon} />
       </TouchableOpacity>
     </View>
   );
 };
 
-export default HomeScreen;
+const mapStateToProps = (state) => ({
+  isDarkTheme: state.theme,
+});
+
+export default connect(mapStateToProps)(HomeScreen);
