@@ -8,7 +8,7 @@ import {
   Modal,
 } from "react-native";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
-import { globalStyles, lightStyles } from "../styles/LightStyles";
+import { lightStyles } from "../styles/LightStyles";
 import { darkStyles } from "../styles/DarkStyles";
 import { tableStyles } from "../styles/TableStyles";
 import AddItemForm from "../modals/AddItemForm";
@@ -54,17 +54,18 @@ const HomeScreen = ({ isDarkTheme }) => {
   const renderItem = ({ item }) => {
     const daysLeft = getDaysLeft(item.expiryDate);
     const daysLeftStyle = daysLeft <= 2 ? tableStyles.daysLeftRed : {};
+    const textColor = isDarkTheme ? { color: "white" } : {};
 
     return (
       <View style={tableStyles.tableRow}>
-        <Text style={tableStyles.tableCell}>{item.name} </Text>
+        <Text style={[tableStyles.tableCell, textColor]}>{item.name}</Text>
         <View style={tableStyles.tableCell}>
-          <Text style={daysLeftStyle}>
+          <Text style={[daysLeftStyle, textColor]}>
             {daysLeft}
             {daysLeft <= 0 && <Text style={{ color: "red" }}>(Expired)</Text>}
           </Text>
         </View>
-        <Text style={tableStyles.tableCell}>{item.quantity} </Text>
+        <Text style={[tableStyles.tableCell, textColor]}>{item.quantity}</Text>
         <TouchableOpacity
           onPress={() =>
             handleEdit(
@@ -76,16 +77,16 @@ const HomeScreen = ({ isDarkTheme }) => {
               setEditMode,
               setEditItemModal
             )
-          } // Call a function to handle edit
+          }
           style={tableStyles.editButton}
         >
-          <Text style={tableStyles.buttonText}>Edit</Text>
+          <Text style={[tableStyles.buttonText, textColor]}>Edit</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => handleDelete(item.id, fetchData)} // Call a function to handle delete
+          onPress={() => handleDelete(item.id, fetchData)}
           style={tableStyles.deleteButton}
         >
-          <Text style={tableStyles.buttonText}>Delete</Text>
+          <Text style={[tableStyles.buttonText, textColor]}>Delete</Text>
         </TouchableOpacity>
       </View>
     );
@@ -96,16 +97,44 @@ const HomeScreen = ({ isDarkTheme }) => {
       {/* Items view */}
       {/* Heading */}
       <View style={tableStyles.tableRow}>
-        <Text style={[tableStyles.tableCell, tableStyles.headingCell]}>
+        <Text
+          style={[
+            tableStyles.tableCell,
+            isDarkTheme
+              ? { ...tableStyles.darkheadingCell, color: "white" }
+              : tableStyles.headingCell,
+          ]}
+        >
           Name
         </Text>
-        <Text style={[tableStyles.tableCell, tableStyles.headingCell]}>
+        <Text
+          style={[
+            tableStyles.tableCell,
+            isDarkTheme
+              ? { ...tableStyles.darkheadingCell, color: "white" }
+              : tableStyles.headingCell,
+          ]}
+        >
           DaysLeft
         </Text>
-        <Text style={[tableStyles.tableCell, tableStyles.headingCell]}>
+        <Text
+          style={[
+            tableStyles.tableCell,
+            isDarkTheme
+              ? { ...tableStyles.darkheadingCell, color: "white" }
+              : tableStyles.headingCell,
+          ]}
+        >
           Quantity
         </Text>
-        <Text style={[tableStyles.tableCell, tableStyles.headingCell]}>
+        <Text
+          style={[
+            tableStyles.tableCell,
+            isDarkTheme
+              ? { ...tableStyles.darkheadingCell, color: "white" }
+              : tableStyles.headingCell,
+          ]}
+        >
           Actions
         </Text>
       </View>
@@ -123,7 +152,9 @@ const HomeScreen = ({ isDarkTheme }) => {
             Keyboard.dismiss();
           }}
         >
-          <View style={lightStyles.container}>
+          <View
+            style={isDarkTheme ? darkStyles.container : lightStyles.container}
+          >
             <MaterialIcons
               name="close"
               style={lightStyles.modalClose}

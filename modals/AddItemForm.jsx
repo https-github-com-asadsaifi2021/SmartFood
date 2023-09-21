@@ -7,20 +7,23 @@ import {
   Platform,
   TouchableOpacity,
 } from "react-native";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Formik } from "formik";
-import { globalStyles } from "../styles/LightStyles";
+import { lightStyles } from "../styles/LightStyles";
+import { darkStyles } from "../styles/DarkStyles";
 import { addFormStyles } from "../styles/AddFormStyles";
 import { Database } from "../database/Database";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as yup from "yup";
+import { connect } from "react-redux";
 
-export default function AddItemForm({
+const AddItemForm = ({
   onItemAdded,
   onItemEdited,
   editData,
   editMode,
-}) {
+  isDarkTheme,
+}) => {
   // EditMode
   const initValues = editMode
     ? {
@@ -45,7 +48,7 @@ export default function AddItemForm({
     setShowPicker(!showPicker);
   };
 
-  // Android
+  // Android Date
   const onChangeAndroid = ({ type }, selectedDate, props) => {
     if (type === "set") {
       const currentDate = selectedDate || date;
@@ -59,7 +62,7 @@ export default function AddItemForm({
     }
   };
 
-  // IOS
+  // IOS Date
   const confirmIOSDate = (props) => {
     props.setFieldValue("expiryDate", date.toDateString());
     toggleDatePicker();
@@ -72,8 +75,11 @@ export default function AddItemForm({
     expiryDate: yup.string().required().label("Expiry Date"),
   });
 
+  // Theme
+  const textColor = isDarkTheme ? { color: "white" } : {};
+
   return (
-    <View style={globalStyles.container}>
+    <View style={isDarkTheme ? darkStyles.container : lightStyles.container}>
       <Formik
         initialValues={initValues}
         onSubmit={async (values, actions) => {
@@ -101,9 +107,9 @@ export default function AddItemForm({
         {(props) => (
           <View>
             <View style={addFormStyles.form}>
-              <Text>Name of Food</Text>
+              <Text style={textColor}>Name of Food</Text>
               <TextInput
-                style={globalStyles.input}
+                style={isDarkTheme ? darkStyles.input : lightStyles.input}
                 placeholder="Name"
                 onChangeText={props.handleChange("name")}
                 value={props.values.name}
@@ -114,9 +120,9 @@ export default function AddItemForm({
             </View>
 
             <View style={addFormStyles.form}>
-              <Text>Quantity</Text>
+              <Text style={textColor}>Quantity</Text>
               <TextInput
-                style={globalStyles.input}
+                style={isDarkTheme ? darkStyles.input : lightStyles.input}
                 placeholder="Quantity"
                 onChangeText={props.handleChange("quantity")}
                 value={props.values.quantity}
@@ -129,10 +135,10 @@ export default function AddItemForm({
             </View>
 
             <View style={addFormStyles.form}>
-              <Text>Expiry Date</Text>
+              <Text style={textColor}>Expiry Date</Text>
               <Pressable onPress={toggleDatePicker}>
                 <TextInput
-                  style={globalStyles.input}
+                  style={isDarkTheme ? darkStyles.input : lightStyles.input}
                   placeholder="Expiry Date"
                   onChangeText={props.handleChange("expiryDate")}
                   value={props.values.expiryDate}
@@ -186,4 +192,10 @@ export default function AddItemForm({
       </Formik>
     </View>
   );
-}
+};
+
+const mapStateToProps = (state) => ({
+  isDarkTheme: state.theme,
+});
+
+export default connect(mapStateToProps)(AddItemForm);

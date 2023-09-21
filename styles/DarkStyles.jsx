@@ -1,7 +1,8 @@
 export const darkStyles = {
   container: {
     flex: 1,
-    backgroundColor: "#121212", // Dark background color
+    padding: 5,
+    backgroundColor: "#121212",
   },
   addButtonContainer: {
     position: "absolute",
@@ -32,8 +33,8 @@ export const darkStyles = {
     borderRadius: 3,
     marginTop: 2,
     marginBottom: 10,
-    backgroundColor: "#333", // Dark text input background color
-    color: "#fff", // Text color for dark input
+    backgroundColor: "#333",
+    color: "#fff",
   },
   modalClose: {
     marginBottom: 10,

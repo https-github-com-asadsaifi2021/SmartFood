@@ -23,6 +23,11 @@ export const tableStyles = StyleSheet.create({
     backgroundColor: "#f2f2f2",
   },
 
+  darkheadingCell: {
+    fontWeight: "bold",
+    backgroundColor: "#121212",
+  },
+
   editButton: {
     backgroundColor: "#007bff",
     padding: 3,
@@ -39,9 +44,5 @@ export const tableStyles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontWeight: "bold",
-  },
-
-  daysLeftRed: {
-    color: "red",
   },
 });
