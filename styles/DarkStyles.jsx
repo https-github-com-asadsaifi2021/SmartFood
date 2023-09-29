@@ -51,5 +51,9 @@ export const darkStyles = {
     shadowRadius: 3.84,
     elevation: 5,
   },
+
+  primaryText: {
+    color: "white",
+  },
   // Add more dark theme styles as needed
 };

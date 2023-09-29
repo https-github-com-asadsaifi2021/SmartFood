@@ -59,4 +59,8 @@ export const lightStyles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+
+  primaryText: {
+    color: "black",
+  },
 });

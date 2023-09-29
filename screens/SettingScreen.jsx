@@ -9,10 +9,8 @@ const SettingScreen = ({ isDarkTheme, toggleTheme }) => {
 
   return (
     <View>
-      <View>
-        <Text>Dark Theme:</Text>
-        <Switch value={isDarkTheme} onValueChange={toggleSwitch} />
-      </View>
+      <Text>Dark Theme:</Text>
+      <Switch value={isDarkTheme} onValueChange={toggleSwitch} />
     </View>
   );
 };
