@@ -8,10 +8,12 @@ import { LightTheme, DarkTheme } from "../styles/SlideBarTheme";
 import CustomHeader from "../components/CustomHeader";
 import { connect } from "react-redux";
 import NotificationDropdown from "../modals/NotificationDropDown";
+import { useSelector } from "react-redux";
 
 const Drawer = createDrawerNavigator();
 
 const SlidingSidebar = ({ isDarkTheme }) => {
+  // Styles Related
   const theme = isDarkTheme ? DarkTheme : LightTheme;
 
   const headerRightContainerStyle = {
@@ -33,17 +35,16 @@ const SlidingSidebar = ({ isDarkTheme }) => {
     zIndex: 1,
   };
 
+  // Dropdown notification related
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownVisible(!isDropdownVisible);
   };
 
-  const yourNotificationsArray = [
-    { message: "Notification 1" },
-    { message: "Notification 2" },
-    { message: "Notification 3" },
-  ];
+  const notificationsArray = useSelector(
+    (state) => state.notifications.notifications
+  );
 
   return (
     <Drawer.Navigator
@@ -80,11 +81,13 @@ const SlidingSidebar = ({ isDarkTheme }) => {
                   size={24}
                   style={headerRightIconStyle}
                 />
-                <View style={notificationDotStyle}></View>
+                {notificationsArray && (
+                  <View style={notificationDotStyle}></View>
+                )}
               </TouchableOpacity>
               <NotificationDropdown
                 isVisible={isDropdownVisible}
-                notifications={yourNotificationsArray}
+                notifications={notificationsArray}
                 onClose={toggleDropdown}
               />
             </View>

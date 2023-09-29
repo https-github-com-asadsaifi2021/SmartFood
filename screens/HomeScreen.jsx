@@ -21,6 +21,8 @@ import {
   handleItemEdited,
 } from "../lib/HomePageHandlers";
 import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
+import { addNotification } from "../features/notification/notificationSlice";
 
 const HomeScreen = ({ isDarkTheme }) => {
   const [addItemFormModal, setAddItemModal] = useState(false);
@@ -30,9 +32,24 @@ const HomeScreen = ({ isDarkTheme }) => {
   const [items, setItems] = useState([]);
   const [editData, setEditData] = useState(null);
 
+  const dispatch = useDispatch();
   const fetchData = async () => {
     try {
       const queryItems = await Database.getItems();
+
+      // Creating notificaiton for items with less than 2 days left
+      for (const item of queryItems) {
+        const daysLeft = getDaysLeft(item.expiryDate);
+        if (daysLeft <= 2) {
+          dispatch(
+            addNotification({
+              message: `Item "${item.name}" has "${daysLeft}" days left before expiry.`,
+              details: { itemID: item.id },
+            })
+          );
+        }
+      }
+
       setItems(queryItems);
     } catch (error) {
       console.error("Error fetching items: ", error);
